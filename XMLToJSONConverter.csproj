@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Configurations\.gitkeep" />
+    <None Remove="Controllers\.gitkeep" />
+    <None Remove="Helpers\.gitkeep" />
+    <None Remove="Middlewares\.gitkeep" />
+    <None Remove="Models\.gitkeep" />
+    <None Remove="Resources\.gitkeep" />
+    <None Remove="Services\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Configurations\.gitkeep" />
+    <Compile Include="Controllers\.gitkeep" />
+    <Compile Include="Helpers\.gitkeep" />
+    <Compile Include="Middlewares\.gitkeep" />
+    <Compile Include="Models\.gitkeep" />
+    <Compile Include="Resources\.gitkeep" />
+    <Compile Include="Services\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
+  </ItemGroup>
+
+</Project>
