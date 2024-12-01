@@ -5,6 +5,13 @@
 
 [Ii]gnore/
 
+# Ignore all .env files
+.env
+.env.*
+
+# Allow .env.example
+!.env.example
+
 # User-specific files
 *.rsuser
 *.suo
