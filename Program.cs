@@ -1,5 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using DotNetEnv;
+
+Env.Load(); // This loads variables from the .env file into the environment
+
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+var jwksUrl = Environment.GetEnvironmentVariable("JWKS_URL");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,15 +49,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "YOUR_JWT_ISSUER_HERE",
-            ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "YOUR_JWT_AUDIENCE_HERE",
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             IssuerSigningKeyResolver = (token, securityToken, kid, validationParameters) =>
             {
                 var client = new HttpClient();
-                var json = client.GetStringAsync(Environment.GetEnvironmentVariable("JWKS_URL") ?? "YOUR_JWKS_URL_HERE").Result;
+                var json = client.GetStringAsync(jwksUrl).Result;
                 var keys = new JsonWebKeySet(json).Keys;
                 return keys;
             }
