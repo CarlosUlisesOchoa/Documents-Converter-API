@@ -6,19 +6,25 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-    <ItemGroup>
-	    <Compile Remove="ignore\**" />
-	    <Content Remove="ignore\**" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ignore\**" />
+    <Content Remove="ignore\**" />
+  </ItemGroup>
 
-    <ItemGroup>
-	    <None Include="ignore\**" />
-    </ItemGroup>
-	
+  <ItemGroup>
+    <None Include="ignore\**" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Remove="Models\.gitkeep" />
     <None Remove="Resources\.gitkeep" />
     <None Remove="Services\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Schemas\comprobante.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
