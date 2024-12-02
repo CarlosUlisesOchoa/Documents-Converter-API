@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace XMLToJSONConverter.Models
+namespace DocumentsConverter.Models
 {
     public class ExtendedProblemDetails : ProblemDetails
     {
