@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DocumentsConverter.Models;
+using DocumentsConverter.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace DocumentsConverter.Controllers
 {
@@ -10,63 +12,43 @@ namespace DocumentsConverter.Controllers
     [Authorize] // Enforces authorization on all actions in this controller
     public class DocumentsController : ControllerBase
     {
+        private readonly IDocumentConverterService _documentConverterService;
+
+        public DocumentsController(IDocumentConverterService documentConverterService)
+        {
+            _documentConverterService = documentConverterService;
+        }
+
         [HttpPost("xml-to-json")]
         public IActionResult Post([FromBody] XmlRequest req)
         {
-            if (string.IsNullOrWhiteSpace(req.Xml))
-            {
-                return CustomProblemDetailsResponse(
-                    status: StatusCodes.Status400BadRequest,
-                    title: "Invalid Input",
-                    detail: "The provided input is null, empty, or consists only of whitespace"
-                );
-            }
-
             try
             {
-                // Process to parse XML to JSON here...
+                var result = _documentConverterService.ConvertXmlToJson(req);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                var problemDetails = HttpContext.RequestServices
+                    .GetRequiredService<ProblemDetailsFactory>()
+                    .CreateProblemDetails(HttpContext, StatusCodes.Status400BadRequest, ex.Message);
 
-                // Solution goes here...
-
-                // Final step
-                var response = new
+                return new ObjectResult(problemDetails)
                 {
-                    Emisor = new { },
-                    Receptor = new { },
-                    Conceptos = Array.Empty<object>(),
-                    Impuestos = new { }
+                    StatusCode = StatusCodes.Status400BadRequest
                 };
-
-                return Ok(response);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                return CustomProblemDetailsResponse(
-                    status: StatusCodes.Status500InternalServerError,
-                    title: "Internal Server Error",
-                    detail: "An unexpected error occurred",
-                    errors: ["Please try again later", "If the issue persists, contact support with the error details"]
-                );
+                var problemDetails = HttpContext.RequestServices
+                    .GetRequiredService<ProblemDetailsFactory>()
+                    .CreateProblemDetails(HttpContext, StatusCodes.Status500InternalServerError, ex.Message);
+
+                return new ObjectResult(problemDetails)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
-        }
-
-        /// <summary>
-        /// Creates a standardized extended ProblemDetails response.
-        /// </summary>
-        private IActionResult CustomProblemDetailsResponse(int status, string title, string detail, string[]? errors = null)
-        {
-            var problemDetails = new ExtendedProblemDetails
-            {
-                Status = status,
-                Title = title,
-                Detail = detail,
-                Errors = errors ?? Array.Empty<string>()
-            };
-
-            return new ObjectResult(problemDetails)
-            {
-                StatusCode = status
-            };
         }
     }
 }
