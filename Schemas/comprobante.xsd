@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Comprobante">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Emisor">
+          <xs:complexType>
+            <xs:attribute name="Nombre" type="xs:string" use="required" />
+            <xs:attribute name="Rfc" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Receptor">
+          <xs:complexType>
+            <xs:attribute name="Nombre" type="xs:string" use="required" />
+            <xs:attribute name="Rfc" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Conceptos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Concepto" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="NoIdentificacion" type="xs:string" use="required" />
+                  <xs:attribute name="ClaveProdServ" type="xs:unsignedInt" use="required" />
+                  <xs:attribute name="Descripcion" type="xs:string" use="required" />
+                  <xs:attribute name="ClaveUnidad" type="xs:string" use="required" />
+                  <xs:attribute name="ValorUnitario" type="xs:decimal" use="required" />
+                  <xs:attribute name="Cantidad" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="Importe" type="xs:decimal" use="required" />
+                  <xs:attribute name="ObjetoImp" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Impuestos" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="TotalImpuestosTrasladados" type="xs:decimal" use="optional" />
+            <xs:attribute name="TotalImpuestosRetenidos" type="xs:decimal" use="optional" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Version" type="xs:string" use="required" />
+      <xs:attribute name="LugarExpedicion" type="xs:string" use="required" />
+      <xs:attribute name="MetodoPago" type="xs:string" use="required" />
+      <xs:attribute name="TipoDeComprobante" type="xs:string" use="required" />
+      <xs:attribute name="FormaPago" type="xs:string" use="required" />
+      <xs:attribute name="Folio" type="xs:string" use="required" />
+      <xs:attribute name="Moneda" type="xs:string" use="required" />
+      <xs:attribute name="Serie" type="xs:string" use="required" />
+      <xs:attribute name="UUID" type="xs:string" use="required" />
+      <xs:attribute name="Fecha" type="xs:dateTime" use="required" />
+      <xs:attribute name="Total" type="xs:decimal" use="required" />
+      <xs:attribute name="SubTotal" type="xs:decimal" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
