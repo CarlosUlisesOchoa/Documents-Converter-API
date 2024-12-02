@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using XMLToJSONConverter.Models;
+using DocumentsConverter.Models;
 
-namespace XMLToJSONConverter.Controllers
+namespace DocumentsConverter.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]

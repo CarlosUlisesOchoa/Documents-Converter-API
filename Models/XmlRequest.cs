@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace XMLToJSONConverter.Models
+namespace DocumentsConverter.Models
 {
     public class XmlRequest
     {

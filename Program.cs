@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using DotNetEnv;
-using XMLToJSONConverter.Models;
+using DocumentsConverter.Models;
 using Microsoft.AspNetCore.Mvc;
 
 Env.Load(); // This loads variables from the .env file into the environment
