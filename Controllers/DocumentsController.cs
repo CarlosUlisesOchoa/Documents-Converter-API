@@ -8,9 +8,9 @@ namespace XMLToJSONConverter.Controllers
     [Route("api/v1/[controller]")]
     [ApiConventionType(typeof(DefaultApiConventions))]
     [Authorize] // Enforces authorization on all actions in this controller
-    public class XmlToJsonController : ControllerBase
+    public class DocumentsController : ControllerBase
     {
-        [HttpPost("transform")]
+        [HttpPost("xml-to-json")]
         public IActionResult Post([FromBody] XmlRequest req)
         {
             if (string.IsNullOrWhiteSpace(req.Xml))
