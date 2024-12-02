@@ -3,6 +3,10 @@ using Microsoft.IdentityModel.Tokens;
 using DotNetEnv;
 using DocumentsConverter.Models;
 using Microsoft.AspNetCore.Mvc;
+using DocumentsConverter.Services.Interfaces;
+using DocumentsConverter.Services;
+using DocumentsConverter.Utilities;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 Env.Load(); // This loads variables from the .env file into the environment
 
@@ -19,6 +23,9 @@ if (string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience) || stri
 }
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Register the custom ProblemDetailsFactory
+builder.Services.AddSingleton<ProblemDetailsFactory, CustomProblemDetailsFactory>();
 
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
@@ -43,6 +50,10 @@ builder.Services.AddControllers()
             };
         };
     });
+
+// Register DocumentConverterService
+builder.Services.AddTransient<IDocumentConverterService, DocumentConverterService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -123,26 +134,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-// Middleware for handling global exceptions
-app.UseExceptionHandler(appBuilder =>
-{
-    appBuilder.Run(async context =>
-    {
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        context.Response.ContentType = "application/json";
-
-        var problemDetails = new ExtendedProblemDetails
-        {
-            Status = StatusCodes.Status500InternalServerError,
-            Title = "Internal Server Error",
-            Detail = "An unexpected error occurred.",
-            Errors = ["Please try again later.", "If the issue persists, contact support with the error details."]
-        };
-
-        await context.Response.WriteAsJsonAsync(problemDetails);
-    });
-});
 
 app.UseHttpsRedirection();
 
