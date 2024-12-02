@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using XMLToJSONConverter.Models;
 
 namespace XMLToJSONConverter.Controllers
 {
@@ -10,14 +11,14 @@ namespace XMLToJSONConverter.Controllers
     public class XmlToJsonController : ControllerBase
     {
         [HttpPost("transform")]
-        public IActionResult Post([FromBody] string xml)
+        public IActionResult Post([FromBody] XmlRequest req)
         {
-            if (string.IsNullOrWhiteSpace(xml))
+            if (string.IsNullOrWhiteSpace(req.Xml))
             {
                 return CustomProblemDetailsResponse(
                     status: StatusCodes.Status400BadRequest,
                     title: "Invalid Input",
-                    detail: "The provided input is null, empty, or consists only of whitespace."
+                    detail: "The provided input is null, empty, or consists only of whitespace"
                 );
             }
 
@@ -41,11 +42,10 @@ namespace XMLToJSONConverter.Controllers
             catch (Exception ex)
             {
                 return CustomProblemDetailsResponse(
-                    status: StatusCodes.Status500InternalServerError, 
+                    status: StatusCodes.Status500InternalServerError,
                     title: "Internal Server Error",
-                    //detail: $"An unexpected error occurred: {ex.Message}", // Not sure if send "ex.Message" to client or just log it internally
-                    detail: "An unexpected error occurred.", 
-                    errors: ["Contact support if this error persists."]
+                    detail: "An unexpected error occurred",
+                    errors: ["Please try again later", "If the issue persists, contact support with the error details"]
                 );
             }
         }
@@ -55,17 +55,13 @@ namespace XMLToJSONConverter.Controllers
         /// </summary>
         private IActionResult CustomProblemDetailsResponse(int status, string title, string detail, string[]? errors = null)
         {
-            var problemDetails = new ProblemDetails
+            var problemDetails = new ExtendedProblemDetails
             {
                 Status = status,
                 Title = title,
-                Detail = detail
+                Detail = detail,
+                Errors = errors ?? Array.Empty<string>()
             };
-
-            if (errors != null && errors.Length > 0)
-            {
-                problemDetails.Extensions.Add("errors", errors);
-            }
 
             return new ObjectResult(problemDetails)
             {
