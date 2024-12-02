@@ -7,6 +7,7 @@ using DocumentsConverter.Services.Interfaces;
 using DocumentsConverter.Services;
 using DocumentsConverter.Utilities;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Text.Json.Serialization;
 
 Env.Load(); // This loads variables from the .env file into the environment
 
@@ -28,6 +29,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ProblemDetailsFactory, CustomProblemDetailsFactory>();
 
 builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Preserve the Pascal case
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        // Optional: Handle reference loops if any
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    })
     .ConfigureApiBehaviorOptions(options =>
     {
         options.InvalidModelStateResponseFactory = context =>

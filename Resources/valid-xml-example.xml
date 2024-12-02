@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Comprobante xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="4.0" LugarExpedicion="44600" MetodoPago="PUE" FormaPago="EFE" TipoDeComprobante="I" Folio="478965" Moneda="MXN" Serie="MXN" Fecha="2024-05-28T12:35:00" Total="1868.72" SubTotal="1960.20" UUID="beda5db8-de6b-4531-8ed2-a09b33a76c07">
+  <Emisor Nombre="XOCHILT CASAS CHAVEZ" Rfc="CACX7605101P8"/>
+  <Receptor Nombre="MAQUINARIA INGENIERIA Y CONSTRUCCIONES DEL SURESTE SA DE CV" Rfc="MIC970221JG5" />
+  <Conceptos>
+    <Concepto NoIdentificacion="CONSUL778" ClaveProdServ="85121600" Descripcion="Servicios de gastroenterólogos" ClaveUnidad="E48" ValorUnitario="980.1" Cantidad="2" Importe="1960.20" ObjetoImp="02" />
+  </Conceptos>
+  <Impuestos TotalImpuestosRetenidos="405.11" TotalImpuestosTrasladados="313.63" />
+</Comprobante>
